@@ -13,14 +13,11 @@ import org.testng.annotations.Test;
 
 import java.util.Set;
 
-
-
-
 public class UITests {
 
     private static WebDriver driver;
     private static HomePage homePage;
-    private static CareersPage careersPage; // Ensure CareersPage attribute is declared
+    private static CareersPage careersPage;
     ExtentReports extentReports = new ExtentReports();
     ExtentSparkReporter sparkReporter = new ExtentSparkReporter("target/extent-reports/report.html");
 
@@ -31,8 +28,9 @@ public class UITests {
 
     @BeforeTest
     public void setup() {
-        // Initialize WebDriver
-        driver = WebDriverHelper.getDriver();
+
+        String browser = "chrome";
+        driver = WebDriverHelper.getDriver(browser);
         driver.get("https://www.intimetec.com/");
         homePage = new HomePage(driver);
 
@@ -47,19 +45,15 @@ public class UITests {
     @Test
     public void testWebsiteAutomation() {
         ExtentTest test = extentReports.createTest("testWebsiteAutomation");
-
-        // Accept cookies
         test.info("Handling cookie banner.");
         homePage.handleCookieBanner();
 
-        // Go to Careers page and switch to new tab
         test.info("Navigating to 'Careers' page.");
         homePage.clickOnCareers();
 
         String parentWindow = driver.getWindowHandle();
         test.info("Storing the parent window handle: " + parentWindow);
 
-        // Switch to the new tab
         for (String handle : driver.getWindowHandles()) {
             if (!handle.equals(parentWindow)) {
                 driver.switchTo().window(handle);
@@ -70,15 +64,12 @@ public class UITests {
 
         careersPage = new CareersPage(driver);
 
-        // Click on India Careers
         test.info("Clicking on 'India Careers'.");
         careersPage.clickOnIndiaCareers();
 
-        // Change Language (click on Australia Language Selector)
         test.info("Clicking on 'Australia Language Selector'.");
         careersPage.clickOnAusLanguageSelector();
 
-        // Navigate to Careers Page again and repeat steps
         test.info("Navigating to 'Careers' page again.");
         homePage.clickOnCareers();
 
@@ -91,15 +82,12 @@ public class UITests {
             }
         }
 
-        // Click on India Careers again
         test.info("Clicking on 'India Careers' again.");
         careersPage.clickOnIndiaCareers();
 
-        // Change Language again (click on Korea English Language)
         test.info("Clicking on 'Korea English Language'.");
         careersPage.clickOnKoreaEnglishLanguage();
 
-        // Navigate to Careers Page again and repeat steps
         test.info("Navigating to 'Careers' page one more time.");
         homePage.clickOnCareers();
 

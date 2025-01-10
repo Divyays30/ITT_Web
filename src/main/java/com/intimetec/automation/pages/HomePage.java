@@ -13,19 +13,13 @@ import java.util.logging.Logger;
 
 import static com.intimetec.automation.helpers.ExtentReportManagerUtils.extent;
 
-public class HomePage { // Change the filename to 'HomePage.java'
+public class HomePage {
     private WebDriver driver;
-
-    // Logger
     private static final Logger logger = Logger.getLogger(HomePage.class.getName());
-
-    // Locators
-    private By cookieBanner = By.id("hs-eu-cookie-confirmation-inner"); // Blocking element
-    private By cookieAcceptButton = By.id("hs-eu-decline-button"); // Button to close cookie
-    private By careersLink = By.xpath("(//a[contains(text(),'Careers')])[3]");// Locator for 'Careers' at the bottom
-    private By korinCareersLink = By.xpath("(//a[contains(text(),'Careers')])[4]");
+    private By cookieBanner = By.id("hs-eu-cookie-confirmation-inner");
+    private By cookieAcceptButton = By.id("hs-eu-decline-button");
+    private By careersLink = By.xpath("//div[contains(@class, 'footer-links-col')]//a[contains(text(),'Careers')]");
     private ExtentTest test;
-
     private static final ExtentReports extentReports = createExtentReports();
 
     public static synchronized ExtentReports createExtentReports() {
@@ -44,7 +38,7 @@ public class HomePage { // Change the filename to 'HomePage.java'
             }
         }
         return extent;
-    };
+    }
 
     public HomePage(WebDriver driver) {
         this.driver = driver;
@@ -53,7 +47,6 @@ public class HomePage { // Change the filename to 'HomePage.java'
         test.info("Initialized HomePage object.");
     }
 
-    // Utility Method: Handle Cookie Banner
     public void handleCookieBanner() {
         test.info("Handling cookie banner.");
         try {
@@ -82,45 +75,38 @@ public class HomePage { // Change the filename to 'HomePage.java'
         }
     }
 
-    // Scroll to Bottom and Click on "Careers"
     public void clickOnCareers() {
         test.info("Clicking on 'Careers' link.");
         JavascriptExecutor js = (JavascriptExecutor) driver;
-
         try {
-            // Scroll to the bottom of the page
             test.info("Scrolling to the bottom of the page.");
             js.executeScript("window.scrollTo(0, document.body.scrollHeight);");
             logger.info("Scrolled to the bottom of the page.");
             test.pass("Scrolled to the bottom of the page.");
-
-            // Wait for the Careers link to be clickable
             test.info("Waiting for 'Careers' link to become clickable.");
             WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(30));
             WebElement careersLinkElement = wait.until(ExpectedConditions.elementToBeClickable(careersLink));
             logger.info("Located the 'Careers' link.");
             test.pass("Located the 'Careers' link.");
-
-            // Scroll the Careers link into view again, in case it's not fully in the viewport
             test.info("Scrolling 'Careers' link into view.");
             js.executeScript("arguments[0].scrollIntoView(true);", careersLinkElement);
             logger.info("Scrolled to 'Careers' link.");
             test.pass("Scrolled to 'Careers' link.");
-
-            // Try to click the "Careers" link
             test.info("Clicking on 'Careers' link.");
             careersLinkElement.click();
             logger.info("Clicked on 'Careers' link successfully.");
             test.pass("Clicked on 'Careers' link successfully.");
+
         } catch (Exception e) {
             logger.warning("Click on 'Careers' failed. Attempting JavaScript click.");
             test.warning("Standard click failed. Attempting JavaScript click.");
 
             try {
                 test.info("Attempting JavaScript click on 'Careers' link.");
-                js.executeScript("arguments[0].click();", driver.findElement(korinCareersLink));
+                js.executeScript("arguments[0].click();", driver.findElement(careersLink));
                 logger.info("'Careers' link clicked successfully using JavaScript.");
                 test.pass("'Careers' link clicked successfully using JavaScript.");
+
             } catch (Exception jsException) {
                 logger.log(Level.SEVERE, "JavaScript click also failed.", jsException);
                 test.fail("JavaScript click on 'Careers' link failed: " + jsException.getMessage());

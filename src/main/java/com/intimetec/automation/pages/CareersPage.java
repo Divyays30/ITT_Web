@@ -10,23 +10,20 @@ import org.openqa.selenium.WebElement;
 
 import java.util.ArrayList;
 
-import static com.intimetec.automation.helpers.ExtentReportManagerUtils.createExtentReports;
-
 public class CareersPage {
     private WebDriver driver;
 
-    // Locators
-    private By indiaCareersLink = By.xpath("//a[@class='btn itt-btn-pghost large']"); // Locator for 'India Careers'
-    private By languageSelector = By.xpath("(//div[@class='globe_class'])[2]");
-    private By australiaEnglishLanguage = By.xpath("//a[text()='Australia (English)']");
-    private By koreaEnglishLanguage = By.xpath("//a[text()='Korea (Korean)']");
+    private By indiaCareersLink = By.xpath("//a[@class='btn itt-btn-pghost large']");
+    private By languageSelector = By.xpath("//div[@class='globe_class']/following::ul[@class='lang_list_class']");
+    private By australiaEnglishLanguageText = By.xpath("//a[text()='Australia (English)']");
+    private By koreaEnglishLanguageText = By.xpath("//a[text()='Korea (Korean)']");
 
     public CareersPage(WebDriver driver) {
         this.driver = driver;
     }
 
     public void clickOnIndiaCareers() {
-        ExtentReports extentReports = ExtentReportManagerUtils.createExtentReports(); // Ensuring ExtentReports is properly initialized.
+        ExtentReports extentReports = ExtentReportManagerUtils.createExtentReports();
         ExtentTest test = extentReports.createTest("Click on India Careers");
         try {
             WebElement element = driver.findElement(indiaCareersLink);
@@ -35,7 +32,6 @@ public class CareersPage {
             ((JavascriptExecutor) driver).executeScript("arguments[0].click();", element);
             test.info("Clicked on 'India Careers' link using JavaScript.");
 
-            // Switch to new tab
             ArrayList<String> allTabs = new ArrayList<>(driver.getWindowHandles());
             driver.switchTo().window(allTabs.get(1));
             test.info("Switched to new tab: " + driver.getCurrentUrl());
@@ -46,18 +42,18 @@ public class CareersPage {
                 test.fail("Navigation to 'India Careers' page failed. Current URL: " + driver.getCurrentUrl());
             }
 
-            String currentTab = driver.getWindowHandle(); // Store the current tab handle
+            String currentTab = driver.getWindowHandle();
             ArrayList<String> tabs = new ArrayList<>(driver.getWindowHandles());
             for (String tab : tabs) {
                 if (!tab.equals(currentTab)) {
-                    driver.switchTo().window(tab); // Switch to the previous tab
+                    driver.switchTo().window(tab);
                     test.info("Switched to the previous tab.");
                     break;
                 }
             }
-            driver.switchTo().window(currentTab); // Switch back to the parent tab
-            driver.close(); // Close the child tab
-            driver.switchTo().window(tabs.get(0)); // Switch to parent window
+            driver.switchTo().window(currentTab);
+            driver.close();
+            driver.switchTo().window(tabs.get(0));
             test.info("Closed child tab and switched back to the parent tab.");
         } catch (Exception e) {
             test.fail("An error occurred while navigating to 'India Careers': " + e.getMessage());
@@ -65,7 +61,7 @@ public class CareersPage {
     }
 
     public void clickOnAusLanguageSelector() {
-        ExtentReports extentReports = ExtentReportManagerUtils.createExtentReports(); // Ensuring ExtentReports is properly initialized.
+        ExtentReports extentReports = ExtentReportManagerUtils.createExtentReports();
         ExtentTest test = extentReports.createTest("Click on Australia (English) Language Selector");
         try {
             WebElement languageElement = driver.findElement(languageSelector);
@@ -74,8 +70,8 @@ public class CareersPage {
             ((JavascriptExecutor) driver).executeScript("arguments[0].click();", languageElement);
             test.info("Clicked on language selector.");
 
-            // Select Australia (English)
-            WebElement australiaEnglishOption = driver.findElement(australiaEnglishLanguage);
+
+            WebElement australiaEnglishOption = driver.findElement(australiaEnglishLanguageText);
             ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", australiaEnglishOption);
             test.info("Scrolled to 'Australia (English)' option.");
             ((JavascriptExecutor) driver).executeScript("arguments[0].click();", australiaEnglishOption);
@@ -86,7 +82,7 @@ public class CareersPage {
     }
 
     public void clickOnKoreaEnglishLanguage() {
-        ExtentReports extentReports = ExtentReportManagerUtils.createExtentReports(); // Ensuring ExtentReports is properly initialized.
+        ExtentReports extentReports = ExtentReportManagerUtils.createExtentReports();
         ExtentTest test = extentReports.createTest("Click on Korea (Korean) Language Selector");
         try {
             WebElement languageElement = driver.findElement(languageSelector);
@@ -95,8 +91,8 @@ public class CareersPage {
             ((JavascriptExecutor) driver).executeScript("arguments[0].click();", languageElement);
             test.info("Clicked on language selector.");
 
-            // Select Korea (Korean)
-            WebElement koreaEnglishOption = driver.findElement(koreaEnglishLanguage);
+
+            WebElement koreaEnglishOption = driver.findElement(koreaEnglishLanguageText);
             ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", koreaEnglishOption);
             test.info("Scrolled to 'Korea (Korean)' option.");
             ((JavascriptExecutor) driver).executeScript("arguments[0].click();", koreaEnglishOption);

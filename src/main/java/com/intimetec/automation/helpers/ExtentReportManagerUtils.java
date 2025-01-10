@@ -8,13 +8,11 @@ public class ExtentReportManagerUtils {
     public static ExtentReports extent;
     private static ExtentTest test;
 
-    // Initialize ExtentReports
     public static synchronized ExtentReports createExtentReports() {
         if (extent == null) {
-            ExtentSparkReporter sparkReporter = new ExtentSparkReporter("target/extent-reports/report.html"); // Output report file
+            ExtentSparkReporter sparkReporter = new ExtentSparkReporter("target/extent-reports/report.html");
             sparkReporter.config().setReportName("Automation Test Report");
             sparkReporter.config().setDocumentTitle("Test Execution Report");
-
             extent = new ExtentReports();
             extent.attachReporter(sparkReporter);
             extent.setSystemInfo("Tester", "QA Team");
@@ -23,7 +21,6 @@ public class ExtentReportManagerUtils {
         return extent;
     }
 
-    // Create a test instance
     public static synchronized ExtentTest createTest(String testName) {
         if (extent != null) {
             test = extent.createTest(testName);
@@ -31,7 +28,6 @@ public class ExtentReportManagerUtils {
         return test;
     }
 
-    // Close the report
     public static synchronized void flushReport() {
         if (extent != null) {
             extent.flush();
