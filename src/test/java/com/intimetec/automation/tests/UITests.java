@@ -4,8 +4,8 @@ import com.aventstack.extentreports.ExtentReports;
 import com.aventstack.extentreports.ExtentTest;
 import com.aventstack.extentreports.reporter.ExtentSparkReporter;
 import com.intimetec.automation.helpers.WebDriverHelper;
-import com.intimetec.automation.pages.CareersPage;
-import com.intimetec.automation.pages.HomePage;
+import com.intimetec.automation.pages.CareersPageActions;
+import com.intimetec.automation.pages.HomePageActions;
 import org.openqa.selenium.WebDriver;
 import org.testng.annotations.AfterTest;
 import org.testng.annotations.BeforeTest;
@@ -16,10 +16,10 @@ import java.util.Set;
 public class UITests {
 
     private static WebDriver driver;
-    private static HomePage homePage;
-    private static CareersPage careersPage;
+    private static HomePageActions homePageActions;
+    private static CareersPageActions careersPageActions;
     ExtentReports extentReports = new ExtentReports();
-    ExtentSparkReporter sparkReporter = new ExtentSparkReporter("target/extent-reports/report.html");
+    ExtentSparkReporter sparkReporter = new ExtentSparkReporter("reports/report.html");
 
     @BeforeTest
     public void setupExtentReports() {
@@ -29,10 +29,10 @@ public class UITests {
     @BeforeTest
     public void setup() {
 
-        String browser = "chrome";
-        driver = WebDriverHelper.getDriver(browser);
+        driver = WebDriverHelper.getDriver("chrome");
         driver.get("https://www.intimetec.com/");
-        homePage = new HomePage(driver);
+        homePageActions = new HomePageActions(driver);
+        careersPageActions = new CareersPageActions(driver);
 
         if (extentReports != null) {
             ExtentTest test = extentReports.createTest("Setup");
@@ -45,14 +45,17 @@ public class UITests {
     @Test
     public void testWebsiteAutomation() {
         ExtentTest test = extentReports.createTest("testWebsiteAutomation");
+
+
         test.info("Handling cookie banner.");
-        homePage.handleCookieBanner();
+        homePageActions.handleCookieBanner();
 
         test.info("Navigating to 'Careers' page.");
-        homePage.clickOnCareers();
+        homePageActions.clickOnCareers();
 
         String parentWindow = driver.getWindowHandle();
         test.info("Storing the parent window handle: " + parentWindow);
+
 
         for (String handle : driver.getWindowHandles()) {
             if (!handle.equals(parentWindow)) {
@@ -62,16 +65,16 @@ public class UITests {
             }
         }
 
-        careersPage = new CareersPage(driver);
 
         test.info("Clicking on 'India Careers'.");
-        careersPage.clickOnIndiaCareers();
+        careersPageActions.clickOnIndiaCareers();
+
 
         test.info("Clicking on 'Australia Language Selector'.");
-        careersPage.clickOnAusLanguageSelector();
+        careersPageActions.clickOnAustraliaCareers();
 
         test.info("Navigating to 'Careers' page again.");
-        homePage.clickOnCareers();
+        homePageActions.clickOnCareers();
 
         Set<String> allHandles = driver.getWindowHandles();
         for (String handle : allHandles) {
@@ -82,14 +85,17 @@ public class UITests {
             }
         }
 
+
         test.info("Clicking on 'India Careers' again.");
-        careersPage.clickOnIndiaCareers();
+        careersPageActions.clickOnIndiaCareers();
+
 
         test.info("Clicking on 'Korea English Language'.");
-        careersPage.clickOnKoreaEnglishLanguage();
+        careersPageActions.clickOnKoreaCareers();
+
 
         test.info("Navigating to 'Careers' page one more time.");
-        homePage.clickOnCareers();
+        homePageActions.clickOnCareers();
 
         for (String handle : driver.getWindowHandles()) {
             if (!handle.equals(parentWindow)) {

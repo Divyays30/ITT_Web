@@ -1,20 +1,15 @@
+
 package com.intimetec.automation.pages;
 
-import com.aventstack.extentreports.ExtentReports;
-import com.aventstack.extentreports.ExtentTest;
-import com.intimetec.automation.helpers.ExtentReportManagerUtils;
 import org.openqa.selenium.By;
-import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-
-import java.util.ArrayList;
 
 public class CareersPage {
     private WebDriver driver;
 
+
     private By indiaCareersLink = By.xpath("//a[@class='btn itt-btn-pghost large']");
-    private By languageSelector = By.xpath("//div[@class='globe_class']/following::ul[@class='lang_list_class']");
     private By australiaEnglishLanguageText = By.xpath("//a[text()='Australia (English)']");
     private By koreaEnglishLanguageText = By.xpath("//a[text()='Korea (Korean)']");
 
@@ -22,83 +17,15 @@ public class CareersPage {
         this.driver = driver;
     }
 
-    public void clickOnIndiaCareers() {
-        ExtentReports extentReports = ExtentReportManagerUtils.createExtentReports();
-        ExtentTest test = extentReports.createTest("Click on India Careers");
-        try {
-            WebElement element = driver.findElement(indiaCareersLink);
-            ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", element);
-            test.info("Scrolled to 'India Careers' link.");
-            ((JavascriptExecutor) driver).executeScript("arguments[0].click();", element);
-            test.info("Clicked on 'India Careers' link using JavaScript.");
-
-            ArrayList<String> allTabs = new ArrayList<>(driver.getWindowHandles());
-            driver.switchTo().window(allTabs.get(1));
-            test.info("Switched to new tab: " + driver.getCurrentUrl());
-
-            if (driver.getCurrentUrl().equals("https://careers.intimetec.in/intimetec/")) {
-                test.pass("Successfully navigated to the correct 'India Careers' page.");
-            } else {
-                test.fail("Navigation to 'India Careers' page failed. Current URL: " + driver.getCurrentUrl());
-            }
-
-            String currentTab = driver.getWindowHandle();
-            ArrayList<String> tabs = new ArrayList<>(driver.getWindowHandles());
-            for (String tab : tabs) {
-                if (!tab.equals(currentTab)) {
-                    driver.switchTo().window(tab);
-                    test.info("Switched to the previous tab.");
-                    break;
-                }
-            }
-            driver.switchTo().window(currentTab);
-            driver.close();
-            driver.switchTo().window(tabs.get(0));
-            test.info("Closed child tab and switched back to the parent tab.");
-        } catch (Exception e) {
-            test.fail("An error occurred while navigating to 'India Careers': " + e.getMessage());
-        }
+    public WebElement getIndiaCareersLink() {
+        return driver.findElement(indiaCareersLink);
     }
 
-    public void clickOnAusLanguageSelector() {
-        ExtentReports extentReports = ExtentReportManagerUtils.createExtentReports();
-        ExtentTest test = extentReports.createTest("Click on Australia (English) Language Selector");
-        try {
-            WebElement languageElement = driver.findElement(languageSelector);
-            ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", languageElement);
-            test.info("Scrolled to language selector.");
-            ((JavascriptExecutor) driver).executeScript("arguments[0].click();", languageElement);
-            test.info("Clicked on language selector.");
-
-
-            WebElement australiaEnglishOption = driver.findElement(australiaEnglishLanguageText);
-            ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", australiaEnglishOption);
-            test.info("Scrolled to 'Australia (English)' option.");
-            ((JavascriptExecutor) driver).executeScript("arguments[0].click();", australiaEnglishOption);
-            test.pass("Successfully selected 'Australia (English)' option.");
-        } catch (Exception e) {
-            test.fail("An error occurred while selecting 'Australia (English)': " + e.getMessage());
-        }
+    public WebElement getAustraliaEnglishLanguageOption() {
+        return driver.findElement(australiaEnglishLanguageText);
     }
 
-    public void clickOnKoreaEnglishLanguage() {
-        ExtentReports extentReports = ExtentReportManagerUtils.createExtentReports();
-        ExtentTest test = extentReports.createTest("Click on Korea (Korean) Language Selector");
-        try {
-            WebElement languageElement = driver.findElement(languageSelector);
-            ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", languageElement);
-            test.info("Scrolled to language selector.");
-            ((JavascriptExecutor) driver).executeScript("arguments[0].click();", languageElement);
-            test.info("Clicked on language selector.");
-
-
-            WebElement koreaEnglishOption = driver.findElement(koreaEnglishLanguageText);
-            ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", koreaEnglishOption);
-            test.info("Scrolled to 'Korea (Korean)' option.");
-            ((JavascriptExecutor) driver).executeScript("arguments[0].click();", koreaEnglishOption);
-            test.pass("Successfully selected 'Korea (Korean)' option.");
-        } catch (Exception e) {
-            test.fail("An error occurred while selecting 'Korea (Korean)': " + e.getMessage());
-        }
+    public WebElement getKoreaEnglishLanguageOption() {
+        return driver.findElement(koreaEnglishLanguageText);
     }
 }

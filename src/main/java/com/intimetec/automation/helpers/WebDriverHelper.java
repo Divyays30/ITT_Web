@@ -16,20 +16,20 @@ public class WebDriverHelper {
         if (driver == null) {
             switch (browser.toLowerCase()) {
                 case "firefox":
-                    System.setProperty("webdriver.gecko.driver", "src/main/java/com/intimetec/automation/browsers/geckodriver");
+                    System.setProperty("webdriver.gecko.driver", "src/main/java/com/intimetec/automation/browser/geckodriver");
                     FirefoxOptions firefoxOptions = new FirefoxOptions();
                     firefoxOptions.addArguments("--start-maximized");
                     driver = new FirefoxDriver(firefoxOptions);
                     break;
                 case "edge":
-                    System.setProperty("webdriver.edge.driver", "src/main/java/com/intimetec/automation/browsers/msedgedriver");
+                    System.setProperty("webdriver.edge.driver", "src/main/java/com/intimetec/automation/browser/msedgedriver");
                     EdgeOptions edgeOptions = new EdgeOptions();
                     edgeOptions.addArguments("--start-maximized");
                     driver = new EdgeDriver(edgeOptions);
                     break;
                 case "chrome":
                 default:
-                    System.setProperty("webdriver.chrome.driver", "src/main/java/com/intimetec/automation/browsers/chromedriver");
+                    System.setProperty("webdriver.chrome.driver", "src/main/java/com/intimetec/automation/browser/chromedriver");
                     ChromeOptions chromeOptions = new ChromeOptions();
                     chromeOptions.addArguments("--start-maximized");
                     chromeOptions.addArguments("--disable-notifications");
@@ -41,10 +41,4 @@ public class WebDriverHelper {
         return driver;
     }
 
-    public static void quitDriver() {
-        if (driver != null) {
-            driver.quit();
-        }
-        driver = null;
-    }
 }
