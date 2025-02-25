@@ -6,11 +6,10 @@ import org.openqa.selenium.WebElement;
 
 public class HomePage {
     private WebDriver driver;
-
     private By cookieBanner = By.id("hs-eu-cookie-confirmation-inner");
     private By cookieAcceptButton = By.id("hs-eu-decline-button");
-    private By careersLink = By.xpath("//div[contains(@class, 'footer-links-col')]//a[contains(text(),'Careers')]");
-
+    private By careersLink = By.xpath("(//a[contains(text(),'Careers')])[3]");
+    private By korinCareersLink = By.xpath("(//a[contains(text(),'Careers')])[4]");
 
     public HomePage(WebDriver driver) {
         this.driver = driver;
@@ -28,4 +27,7 @@ public class HomePage {
         return driver.findElement(careersLink);
     }
 
+    public WebElement getKorinCareersLink() {
+        return driver.findElement(korinCareersLink);
+    }
 }

@@ -3,7 +3,7 @@ package com.intimetec.automation.pages;
 import com.aventstack.extentreports.ExtentReports;
 import com.aventstack.extentreports.ExtentTest;
 import com.aventstack.extentreports.reporter.ExtentSparkReporter;
-import org.openqa.selenium.JavascriptExecutor;
+import com.intimetec.automation.helpers.WebDriverUtils;
 import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -78,42 +78,28 @@ public class HomePageActions {
 
     public void clickOnCareers() {
         test.info("Clicking on 'Careers' link.");
-        JavascriptExecutor js = (JavascriptExecutor) driver;
-
         try {
-            test.info("Scrolling to the bottom of the page.");
-            js.executeScript("window.scrollTo(0, document.body.scrollHeight);");
-            logger.info("Scrolled to the bottom of the page.");
-            test.pass("Scrolled to the bottom of the page.");
-
-            test.info("Waiting for 'Careers' link to become clickable.");
-            WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(30));
-            WebElement careersLinkElement = wait.until(ExpectedConditions.elementToBeClickable(homePage.getCareersLink()));
-            logger.info("Located the 'Careers' link.");
-            test.pass("Located the 'Careers' link.");
-
-            test.info("Scrolling 'Careers' link into view.");
-            js.executeScript("arguments[0].scrollIntoView(true);", careersLinkElement);
-            logger.info("Scrolled to 'Careers' link.");
-            test.pass("Scrolled to 'Careers' link.");
-
-            test.info("Clicking on 'Careers' link.");
-            careersLinkElement.click();
-            logger.info("Clicked on 'Careers' link successfully.");
+            WebDriverUtils.scrollToBottom(driver);
+            WebElement careersLinkElement = WebDriverUtils.waitForElementToBeClickable(driver, homePage.getCareersLink(), Duration.ofSeconds(30));
+            WebDriverUtils.scrollToElement(driver, careersLinkElement);
+            WebDriverUtils.clickElement(driver, careersLinkElement);
             test.pass("Clicked on 'Careers' link successfully.");
         } catch (Exception e) {
-            logger.warning("Click on 'Careers' failed. Attempting JavaScript click.");
-            test.warning("Standard click failed. Attempting JavaScript click.");
+            handleCareersLinkClickFailure(e);
+        }
+    }
 
-            try {
-                test.info("Attempting JavaScript click on 'Careers' link.");
-                js.executeScript("arguments[0].click();", homePage.getCareersLink());
-                logger.info("'Careers' link clicked successfully using JavaScript.");
-                test.pass("'Careers' link clicked successfully using JavaScript.");
-            } catch (Exception jsException) {
-                logger.log(Level.SEVERE, "JavaScript click also failed.", jsException);
-                test.fail("JavaScript click on 'Careers' link failed: " + jsException.getMessage());
-            }
+    private void handleCareersLinkClickFailure(Exception e) {
+        logger.warning("Click on 'Careers' failed. Attempting JavaScript click.");
+        test.warning("Standard click failed. Attempting JavaScript click.");
+        try {
+            test.info("Attempting JavaScript click on 'Careers' link.");
+            WebDriverUtils.clickUsingJS(driver, homePage.getCareersLink());
+            logger.info("'Careers' link clicked successfully using JavaScript.");
+            test.pass("'Careers' link clicked successfully using JavaScript.");
+        } catch (Exception jsException) {
+            logger.log(Level.SEVERE, "JavaScript click also failed.", jsException);
+            test.fail("JavaScript click on 'Careers' link failed: " + jsException.getMessage());
         }
     }
 }

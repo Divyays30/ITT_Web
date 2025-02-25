@@ -3,21 +3,19 @@ package com.intimetec.automation.tests;
 import com.aventstack.extentreports.ExtentReports;
 import com.aventstack.extentreports.ExtentTest;
 import com.aventstack.extentreports.reporter.ExtentSparkReporter;
-import com.intimetec.automation.helpers.WebDriverHelper;
+import com.intimetec.automation.helpers.WebDriverHelper; // Add this import
 import com.intimetec.automation.pages.CareersPageActions;
 import com.intimetec.automation.pages.HomePageActions;
-import org.openqa.selenium.WebDriver;
 import org.testng.annotations.AfterTest;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
 
 import java.util.Set;
 
-public class UITests {
+public class UITests extends BaseTest {
 
-    private static WebDriver driver;
-    private static HomePageActions homePageActions;
-    private static CareersPageActions careersPageActions;
+    private HomePageActions homePageActions;
+    private CareersPageActions careersPageActions;
     ExtentReports extentReports = new ExtentReports();
     ExtentSparkReporter sparkReporter = new ExtentSparkReporter("reports/report.html");
 
@@ -28,8 +26,9 @@ public class UITests {
 
     @BeforeTest
     public void setup() {
-
-        driver = WebDriverHelper.getDriver("chrome");
+        // Initialize WebDriver
+        String browser = System.getProperty("browser", "firefox");
+        driver = WebDriverHelper.getDriver(browser);
         driver.get("https://www.intimetec.com/");
         homePageActions = new HomePageActions(driver);
         careersPageActions = new CareersPageActions(driver);
@@ -42,13 +41,18 @@ public class UITests {
         }
     }
 
+    @BeforeTest
+    public void setupPages() {
+        homePageActions = new HomePageActions(driver);
+        careersPageActions = new CareersPageActions(driver);
+    }
+
     @Test
     public void testWebsiteAutomation() {
-        ExtentTest test = extentReports.createTest("testWebsiteAutomation");
-
-
+        test = extentReports.createTest("testWebsiteAutomation");
         test.info("Handling cookie banner.");
         homePageActions.handleCookieBanner();
+
 
         test.info("Navigating to 'Careers' page.");
         homePageActions.clickOnCareers();
@@ -71,7 +75,8 @@ public class UITests {
 
 
         test.info("Clicking on 'Australia Language Selector'.");
-        careersPageActions.clickOnAustraliaCareers();
+        careersPageActions.clickOnAustraliaCareers();;
+
 
         test.info("Navigating to 'Careers' page again.");
         homePageActions.clickOnCareers();
@@ -91,7 +96,7 @@ public class UITests {
 
 
         test.info("Clicking on 'Korea English Language'.");
-        careersPageActions.clickOnKoreaCareers();
+        careersPageActions.clickOnKoreaCareers();;
 
 
         test.info("Navigating to 'Careers' page one more time.");
