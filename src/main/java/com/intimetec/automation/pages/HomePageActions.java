@@ -1,105 +1,71 @@
 package com.intimetec.automation.pages;
 
-import com.aventstack.extentreports.ExtentReports;
-import com.aventstack.extentreports.ExtentTest;
-import com.aventstack.extentreports.reporter.ExtentSparkReporter;
 import com.intimetec.automation.helpers.WebDriverUtils;
-import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.time.Duration;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
-import static com.intimetec.automation.helpers.ExtentReportManagerUtils.extent;
 
 public class HomePageActions {
-    private WebDriver driver;
-    private HomePage homePage;
-    private ExtentTest test;
-    private static final Logger logger = Logger.getLogger(HomePageActions.class.getName());
-    private static final ExtentReports extentReports = createExtentReports();
+    private static final Duration COOKIE_BANNER_TIMEOUT = Duration.ofSeconds(10);
+    private static final Duration CAREERS_LINK_TIMEOUT = Duration.ofSeconds(30);
+
+    private final WebDriver driver;
+    private final HomePage homePage;
+    private final WebDriverUtils webDriverUtils;
+    private String parentWindowHandle;
 
     public HomePageActions(WebDriver driver) {
         this.driver = driver;
         this.homePage = new HomePage(driver);
-        this.test = extentReports.createTest("HomePage Test");
-        test.info("Initialized HomePageActions object.");
+        this.webDriverUtils = new WebDriverUtils(driver);
     }
 
-    public static synchronized ExtentReports createExtentReports() {
-        if (extent == null) {
-            try {
-                ExtentSparkReporter sparkReporter = new ExtentSparkReporter("target/reports/AutomationTestReport.html");
-                sparkReporter.config().setReportName("Automation Test Report");
-                sparkReporter.config().setDocumentTitle("Test Execution Report");
-
-                extent = new ExtentReports();
-                extent.attachReporter(sparkReporter);
-                extent.setSystemInfo("Tester", "QA Team");
-                extent.setSystemInfo("Environment", "Production");
-            } catch (Exception e) {
-                System.err.println("Error initializing ExtentReports: " + e.getMessage());
-            }
-        }
-        return extent;
-    }
-
-    public void handleCookieBanner() {
-        test.info("Handling cookie banner.");
+    public HomePageActions handleCookieBanner() {
         try {
-            WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
-            test.info("Waiting for cookie banner to be visible.");
-            WebElement banner = wait.until(ExpectedConditions.visibilityOf(homePage.getCookieBanner()));
-            test.info("Cookie banner is visible.");
-
+            WebElement banner = webDriverUtils.waitForElementVisible(homePage.getCookieBanner(), COOKIE_BANNER_TIMEOUT);
             if (banner.isDisplayed()) {
-                logger.info("Cookie banner detected. Attempting to dismiss.");
-                test.info("Cookie banner detected. Attempting to dismiss.");
-
-                WebElement declineButton = homePage.getCookieAcceptButton();
-                test.info("Located 'Decline' button.");
-                declineButton.click();
-
-                logger.info("Cookie banner dismissed successfully.");
-                test.pass("Cookie banner dismissed successfully.");
+                webDriverUtils.clickElement(homePage.getCookieAcceptButton());
             }
-        } catch (TimeoutException e) {
-            logger.warning("No cookie banner to dismiss. Timeout occurred.");
-            test.warning("No cookie banner to dismiss. Timeout occurred.");
         } catch (Exception e) {
-            logger.log(Level.SEVERE, "An error occurred while handling the cookie banner.", e);
-            test.fail("An error occurred while handling the cookie banner: " + e.getMessage());
+            webDriverUtils.handleException("Handling cookie banner", e);
+        }
+        return this;
+    }
+
+    public HomePageActions clickOnCareers() {
+        try {
+            webDriverUtils.scrollToBottom();
+            WebElement careersLink = webDriverUtils.waitForElementClickable(homePage.getCareersLink(), CAREERS_LINK_TIMEOUT);
+            webDriverUtils.scrollToElement(careersLink);
+            webDriverUtils.clickElement(careersLink);
+        } catch (Exception e) {
+            tryJavaScriptClick(homePage.getCareersLink());
+        }
+        return this;
+    }
+
+    private void tryJavaScriptClick(WebElement element) {
+        try {
+            webDriverUtils.clickUsingJS(element);
+        } catch (Exception e) {
+            webDriverUtils.handleException("JavaScript click failed", e);
+            throw e;
         }
     }
 
-    public void clickOnCareers() {
-        test.info("Clicking on 'Careers' link.");
-        try {
-            WebDriverUtils.scrollToBottom(driver);
-            WebElement careersLinkElement = WebDriverUtils.waitForElementToBeClickable(driver, homePage.getCareersLink(), Duration.ofSeconds(30));
-            WebDriverUtils.scrollToElement(driver, careersLinkElement);
-            WebDriverUtils.clickElement(driver, careersLinkElement);
-            test.pass("Clicked on 'Careers' link successfully.");
-        } catch (Exception e) {
-            handleCareersLinkClickFailure(e);
-        }
+    public HomePageActions storeParentWindowHandle() {
+        parentWindowHandle = driver.getWindowHandle();
+        return this;
     }
 
-    private void handleCareersLinkClickFailure(Exception e) {
-        logger.warning("Click on 'Careers' failed. Attempting JavaScript click.");
-        test.warning("Standard click failed. Attempting JavaScript click.");
+    public HomePageActions switchToNewWindow() {
         try {
-            test.info("Attempting JavaScript click on 'Careers' link.");
-            WebDriverUtils.clickUsingJS(driver, homePage.getCareersLink());
-            logger.info("'Careers' link clicked successfully using JavaScript.");
-            test.pass("'Careers' link clicked successfully using JavaScript.");
-        } catch (Exception jsException) {
-            logger.log(Level.SEVERE, "JavaScript click also failed.", jsException);
-            test.fail("JavaScript click on 'Careers' link failed: " + jsException.getMessage());
+            webDriverUtils.switchToNewWindow(parentWindowHandle);
+        } catch (Exception e) {
+            webDriverUtils.handleException("Switching to new window", e);
+            throw e;
         }
+        return this;
     }
 }

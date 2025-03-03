@@ -1,51 +1,77 @@
 package com.intimetec.automation.pages;
 
-import com.intimetec.automation.helpers.ExtentReportUtils;
 import com.intimetec.automation.helpers.WebDriverUtils;
 import org.openqa.selenium.WebDriver;
+
+import java.time.Duration;
+
 import org.openqa.selenium.WebElement;
 
 public class CareersPageActions {
-    private WebDriver driver;
-    private CareersPage careersPage;
+    private static final Duration ELEMENT_TIMEOUT = Duration.ofSeconds(30);
+
+    private final CareersPage careersPage;
+    private final WebDriverUtils webDriverUtils;
 
     public CareersPageActions(WebDriver driver) {
-        this.driver = driver;
         this.careersPage = new CareersPage(driver);
+        this.webDriverUtils = new WebDriverUtils(driver);
     }
 
-    public void clickOnIndiaCareers() {
-        clickOnCareersLink(careersPage.getIndiaCareersLink(), "https://careers.intimetec.in/intimetec/", "India Careers");
-    }
-
-    public void clickOnAustraliaCareers() {
-        clickOnCareersLink(careersPage.getAustraliaEnglishLanguageOption(), "https://careers.intimetec.in/australia/", "Australia Careers");
-    }
-
-    public void clickOnKoreaCareers() {
-        clickOnCareersLink(careersPage.getKoreaEnglishLanguageOption(), "https://careers.intimetec.in/korea/", "Korea Careers");
-    }
-
-    private void clickOnCareersLink(WebElement element, String expectedUrl, String linkDescription) {
-        ExtentReportUtils report = new ExtentReportUtils("Click on " + linkDescription);
+    public CareersPageActions clickOnIndiaCareers() {
         try {
-            WebDriverUtils.scrollToElement(driver, element);
-            report.logInfo("Scrolled to '" + linkDescription + "' link.");
-            WebDriverUtils.clickUsingJS(driver, element);
-            report.logInfo("Clicked on '" + linkDescription + "' link using JavaScript.");
-            WebDriverUtils.switchToTab(driver, 1);
-            report.logInfo("Switched to new tab: " + driver.getCurrentUrl());
-
-            if (driver.getCurrentUrl().equals(expectedUrl)) {
-                report.logPass("Successfully navigated to the correct '" + linkDescription + "' page.");
-            } else {
-                report.logFail("Navigation to '" + linkDescription + "' page failed. Current URL: " + driver.getCurrentUrl());
-            }
-
-            WebDriverUtils.closeCurrentTab(driver);
-            report.logInfo("Closed child tab and switched back to the parent tab.");
+            webDriverUtils.waitForElementClickable(careersPage.getIndiaCareersLink(), ELEMENT_TIMEOUT);
+            webDriverUtils.scrollToElement(careersPage.getIndiaCareersLink());
+            webDriverUtils.clickElement(careersPage.getIndiaCareersLink());
         } catch (Exception e) {
-            report.logFail("An error occurred while navigating to '" + linkDescription + "': " + e.getMessage());
+            webDriverUtils.handleException("clicking India Careers link", e);
+            tryJavaScriptClick(careersPage.getIndiaCareersLink(), "India Careers link");
+        }
+        return this;
+    }
+
+    public CareersPageActions clickOnLanguageSelector() {
+        try {
+            webDriverUtils.waitForElementClickable(careersPage.getLanguageSelector(), ELEMENT_TIMEOUT);
+            webDriverUtils.scrollToElement(careersPage.getLanguageSelector());
+            webDriverUtils.clickElement(careersPage.getLanguageSelector());
+        } catch (Exception e) {
+            webDriverUtils.handleException("clicking Language Selector", e);
+            tryJavaScriptClick(careersPage.getLanguageSelector(), "Language Selector");
+        }
+        return this;
+    }
+
+    public CareersPageActions selectAustraliaEnglish() {
+        try {
+            webDriverUtils.waitForElementClickable(careersPage.getAustraliaEnglishLanguageOption(), ELEMENT_TIMEOUT);
+            webDriverUtils.scrollToElement(careersPage.getAustraliaEnglishLanguageOption());
+            webDriverUtils.clickElement(careersPage.getAustraliaEnglishLanguageOption());
+        } catch (Exception e) {
+            webDriverUtils.handleException("selecting Australia English", e);
+            tryJavaScriptClick(careersPage.getAustraliaEnglishLanguageOption(), "Australia English option");
+        }
+        return this;
+    }
+
+    public CareersPageActions selectKoreaEnglish() {
+        try {
+            webDriverUtils.waitForElementClickable(careersPage.getKoreaEnglishLanguageOption(), ELEMENT_TIMEOUT);
+            webDriverUtils.scrollToElement(careersPage.getKoreaEnglishLanguageOption());
+            webDriverUtils.clickElement(careersPage.getKoreaEnglishLanguageOption());
+        } catch (Exception e) {
+            webDriverUtils.handleException("selecting Korea English", e);
+            tryJavaScriptClick(careersPage.getKoreaEnglishLanguageOption(), "Korea English option");
+        }
+        return this;
+    }
+
+    private void tryJavaScriptClick(WebElement element, String elementName) {
+        try {
+            webDriverUtils.clickUsingJS(element);
+        } catch (Exception e) {
+            webDriverUtils.handleException("JavaScript click on " + elementName, e);
+            throw e;
         }
     }
 }

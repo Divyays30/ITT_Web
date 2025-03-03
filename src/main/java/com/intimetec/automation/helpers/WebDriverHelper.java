@@ -4,6 +4,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.edge.EdgeDriver;
+
 import java.time.Duration;
 
 public class WebDriverHelper {
@@ -13,7 +14,6 @@ public class WebDriverHelper {
         if (driver == null) {
             switch (browser.toLowerCase()) {
                 case "firefox":
-
                     driver = new FirefoxDriver(BrowserProvider.getFirefoxOptions());
                     break;
                 case "edge":

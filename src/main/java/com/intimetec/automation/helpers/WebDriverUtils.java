@@ -6,44 +6,101 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
-
-import com.aventstack.extentreports.ExtentTest;
-
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class WebDriverUtils {
-    private WebDriver driver;
-    private By languageSelector;
     private static final Logger logger = Logger.getLogger(WebDriverUtils.class.getName());
+    private final WebDriver driver;
 
-    public WebDriverUtils(WebDriver driver, By languageSelector) {
+    public WebDriverUtils(WebDriver driver) {
         this.driver = driver;
-        this.languageSelector = languageSelector;
     }
 
-    public static void scrollToElement(WebDriver driver, WebElement element) {
+    public WebElement waitForElementVisible(WebElement element, Duration timeout) {
+        try {
+            WebDriverWait wait = new WebDriverWait(driver, timeout);
+            return wait.until(ExpectedConditions.visibilityOf(element));
+        } catch (Exception e) {
+            handleException("Element not visible: " + element, e);
+            throw e;
+        }
+    }
+
+    public WebElement waitForElementClickable(WebElement element, Duration timeout) {
+        try {
+            WebDriverWait wait = new WebDriverWait(driver, timeout);
+            return wait.until(ExpectedConditions.elementToBeClickable(element));
+        } catch (Exception e) {
+            handleException("Element not clickable: " + element, e);
+            throw e;
+        }
+    }
+
+    public void clickElement(WebElement element) {
+        try {
+            element.click();
+            logger.info("Clicked element: " + element);
+        } catch (Exception e) {
+            handleException("Failed to click element: " + element, e);
+            throw e;
+        }
+    }
+
+    public void scrollToBottom() {
+        try {
+            ((JavascriptExecutor) driver).executeScript("window.scrollTo(0, document.body.scrollHeight)");
+            logger.info("Scrolled to bottom of page");
+        } catch (Exception e) {
+            handleException("Failed to scroll to bottom", e);
+            throw e;
+        }
+    }
+
+    public void scrollToElement(WebElement element) {
         try {
             ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", element);
             logger.info("Scrolled to element: " + element);
         } catch (Exception e) {
-            logger.log(Level.SEVERE, "Failed to scroll to element: " + element, e);
+            handleException("Failed to scroll to element: " + element, e);
+            throw e;
         }
     }
 
-    public void changeLanguage(By languageOption, ExtentTest test, String languageDescription) {
-        selectLanguage(languageOption, test, languageDescription);
-    }
-
-    public static void clickUsingJS(WebDriver driver, WebElement element) {
+    public void clickUsingJS(WebElement element) {
         try {
             ((JavascriptExecutor) driver).executeScript("arguments[0].click();", element);
-            logger.info("Clicked on element using JavaScript: " + element);
+            logger.info("Clicked element using JavaScript: " + element);
         } catch (Exception e) {
-            logger.log(Level.SEVERE, "Failed to click on element using JavaScript: " + element, e);
+            handleException("Failed to click element using JavaScript: " + element, e);
+            throw e;
         }
+    }
+
+    public void switchToNewWindow(String parentWindowHandle) {
+        try {
+            for (String handle : driver.getWindowHandles()) {
+                if (!handle.equals(parentWindowHandle)) {
+                    driver.switchTo().window(handle);
+                    logger.info("Switched to window: " + handle);
+                    return;
+                }
+            }
+            throw new RuntimeException("No new window found to switch to");
+        } catch (Exception e) {
+            handleException("Failed to switch to new window", e);
+            throw e;
+        }
+    }
+
+    public void handleException(String message, Exception e) {
+        logger.log(Level.SEVERE, message, e);
+    }
+
+    public void changeLanguage(By languageOption, String languageDescription) {
+        selectLanguage(languageOption, languageDescription);
     }
 
     public static void switchToTab(WebDriver driver, int tabIndex) {
@@ -67,54 +124,18 @@ public class WebDriverUtils {
         }
     }
 
-    public void scrollToAndClick(By locator, ExtentTest test, String description) {
+    public void scrollToAndClick(By locator, String description) {
         try {
             WebElement element = driver.findElement(locator);
             ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", element);
-            test.info("Scrolled to " + description);
             ((JavascriptExecutor) driver).executeScript("arguments[0].click();", element);
-            test.info("Clicked on " + description);
             logger.info("Scrolled to and clicked on " + description);
         } catch (Exception e) {
-            test.fail("An error occurred while interacting with " + description + ": " + e.getMessage());
             logger.log(Level.SEVERE, "An error occurred while interacting with " + description, e);
         }
     }
 
-    public void selectLanguage(By languageOption, ExtentTest test, String languageDescription) {
-        scrollToAndClick(languageSelector, test, "language selector");
-        scrollToAndClick(languageOption, test, languageDescription);
-    }
-
-    public static void scrollToBottom(WebDriver driver) {
-        try {
-            JavascriptExecutor js = (JavascriptExecutor) driver;
-            js.executeScript("window.scrollTo(0, document.body.scrollHeight);");
-            logger.info("Scrolled to the bottom of the page.");
-        } catch (Exception e) {
-            logger.log(Level.SEVERE, "Failed to scroll to the bottom of the page.", e);
-        }
-    }
-
-    public static WebElement waitForElementToBeClickable(WebDriver driver, WebElement element, Duration timeout) {
-        try {
-            WebDriverWait wait = new WebDriverWait(driver, timeout);
-            WebElement clickableElement = wait.until(ExpectedConditions.elementToBeClickable(element));
-            logger.info("Element is clickable: " + element);
-            return clickableElement;
-        } catch (Exception e) {
-            logger.log(Level.SEVERE, "Failed to wait for element to be clickable: " + element, e);
-            throw e;
-        }
-    }
-
-    public static void clickElement(WebDriver driver, WebElement element) {
-        try {
-            element.click();
-            logger.info("Clicked on element: " + element);
-        } catch (Exception e) {
-            logger.log(Level.SEVERE, "Failed to click on element: " + element, e);
-            throw e;
-        }
+    public void selectLanguage(By languageOption, String languageDescription) {
+        scrollToAndClick(languageOption, languageDescription);
     }
 }
