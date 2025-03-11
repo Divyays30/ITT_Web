@@ -5,15 +5,28 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="ca6617e0-f984-4431-8c39-dfac61e6caef" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/intimetec/automation/utils/ConfigManager.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/java/com/intimetec/automation/resources/Environment.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/intimetec/automation/helpers/BrowserProvider.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/intimetec/automation/helpers/BrowserProvider.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/intimetec/automation/helpers/ExtentReportManagerUtils.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/intimetec/automation/helpers/ExtentReportManagerUtils.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/intimetec/automation/helpers/ExtentReportUtils.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/intimetec/automation/helpers/ExtentReportUtils.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/intimetec/automation/helpers/WebDriverHelper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/intimetec/automation/helpers/WebDriverHelper.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/intimetec/automation/helpers/WebDriverUtils.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/intimetec/automation/helpers/WebDriverUtils.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/intimetec/automation/pages/CareersPage.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/intimetec/automation/pages/CareersPage.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/intimetec/automation/pages/CareersPageActions.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/intimetec/automation/pages/CareersPageActions.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/intimetec/automation/pages/HomePage.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/intimetec/automation/pages/HomePage.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/intimetec/automation/pages/HomePageActions.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/intimetec/automation/pages/HomePageActions.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/test/java/com/intimetec/automation/tests/BaseTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/com/intimetec/automation/tests/BaseTest.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/test/java/com/intimetec/automation/tests/UITests.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/com/intimetec/automation/tests/UITests.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/intimetec/automation/helpers/ExtentReportManagerUtils.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/intimetec/automation/helpers/ExtentReportUtils.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/intimetec/automation/helpers/WebDriverHelper.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/intimetec/automation/helpers/WebDriverUtils.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/intimetec/automation/pages/CareersPage.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/intimetec/automation/pages/CareersPageActions.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/intimetec/automation/pages/HomePage.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/intimetec/automation/pages/HomePageActions.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/test-classes/com/intimetec/automation/tests/UITests.class" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -41,11 +54,36 @@
   <component name="PropertiesComponent">{
   &quot;keyToString&quot;: {
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;TestNG.UITests.executor&quot;: &quot;Run&quot;,
     &quot;git-widget-placeholder&quot;: &quot;new-feature-branch&quot;,
     &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
     &quot;last_opened_file_path&quot;: &quot;/Users/gopi/Desktop/Web/ITT_Web&quot;
   }
 }</component>
+  <component name="RunManager">
+    <configuration name="UITests" type="TestNG" temporary="true" nameIsGenerated="true">
+      <module name="automation-project" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.intimetec.automation.tests.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="com.intimetec.automation.tests" />
+      <option name="MAIN_CLASS_NAME" value="com.intimetec.automation.tests.UITests" />
+      <option name="TEST_OBJECT" value="CLASS" />
+      <properties />
+      <listeners />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="TestNG.UITests" />
+      </list>
+    </recent_temporary>
+  </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">

@@ -3,7 +3,6 @@ package com.intimetec.automation.pages;
 import com.intimetec.automation.helpers.WebDriverUtils;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-
 import java.time.Duration;
 
 public class HomePageActions {
@@ -22,35 +21,36 @@ public class HomePageActions {
     }
 
     public HomePageActions handleCookieBanner() {
-        try {
-            WebElement banner = webDriverUtils.waitForElementVisible(homePage.getCookieBanner(), COOKIE_BANNER_TIMEOUT);
-            if (banner.isDisplayed()) {
-                webDriverUtils.clickElement(homePage.getCookieAcceptButton());
-            }
-        } catch (Exception e) {
-            webDriverUtils.handleException("Handling cookie banner", e);
+        WebElement banner = webDriverUtils.waitForElementVisible(
+                homePage.getCookieBanner(),
+                COOKIE_BANNER_TIMEOUT
+        );
+        if (banner != null && banner.isDisplayed()) {
+            webDriverUtils.clickElement(homePage.getCookieAcceptButton());
         }
         return this;
     }
 
     public HomePageActions clickOnCareers() {
-        try {
-            webDriverUtils.scrollToBottom();
-            WebElement careersLink = webDriverUtils.waitForElementClickable(homePage.getCareersLink(), CAREERS_LINK_TIMEOUT);
-            webDriverUtils.scrollToElement(careersLink);
-            webDriverUtils.clickElement(careersLink);
-        } catch (Exception e) {
-            tryJavaScriptClick(homePage.getCareersLink());
+        webDriverUtils.scrollToBottom();
+        WebElement careersLink = webDriverUtils.waitForElementClickable(
+                homePage.getCareersLink(),
+                CAREERS_LINK_TIMEOUT
+        );
+        webDriverUtils.scrollToElement(careersLink);
+
+        if (!tryClick(careersLink)) {
+            webDriverUtils.clickUsingJS(careersLink);
         }
         return this;
     }
 
-    private void tryJavaScriptClick(WebElement element) {
+    private boolean tryClick(WebElement element) {
         try {
-            webDriverUtils.clickUsingJS(element);
+            webDriverUtils.clickElement(element);
+            return true;
         } catch (Exception e) {
-            webDriverUtils.handleException("JavaScript click failed", e);
-            throw e;
+            return false;
         }
     }
 
@@ -60,11 +60,8 @@ public class HomePageActions {
     }
 
     public HomePageActions switchToNewWindow() {
-        try {
+        if (parentWindowHandle != null) {
             webDriverUtils.switchToNewWindow(parentWindowHandle);
-        } catch (Exception e) {
-            webDriverUtils.handleException("Switching to new window", e);
-            throw e;
         }
         return this;
     }

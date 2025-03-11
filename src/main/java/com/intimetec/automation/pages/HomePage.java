@@ -8,8 +8,7 @@ public class HomePage {
     private WebDriver driver;
     private By cookieBanner = By.id("hs-eu-cookie-confirmation-inner");
     private By cookieAcceptButton = By.id("hs-eu-decline-button");
-    private By careersLink = By.xpath("(//a[contains(text(),'Careers')])[3]");
-    private By korinCareersLink = By.xpath("(//a[contains(text(),'Careers')])[4]");
+    private By careersLink = By.xpath("//div[contains(@class, 'footer-links-col')]//a[contains(text(),'Careers')]");
 
     public HomePage(WebDriver driver) {
         this.driver = driver;

@@ -2,9 +2,7 @@ package com.intimetec.automation.pages;
 
 import com.intimetec.automation.helpers.WebDriverUtils;
 import org.openqa.selenium.WebDriver;
-
 import java.time.Duration;
-
 import org.openqa.selenium.WebElement;
 
 public class CareersPageActions {

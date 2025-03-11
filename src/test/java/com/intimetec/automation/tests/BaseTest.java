@@ -4,15 +4,17 @@ import com.aventstack.extentreports.ExtentReports;
 import com.aventstack.extentreports.ExtentTest;
 import com.intimetec.automation.helpers.ExtentReportManagerUtils;
 import com.intimetec.automation.helpers.WebDriverHelper;
+import com.intimetec.automation.utils.ConfigManager;
 import org.openqa.selenium.WebDriver;
 import org.testng.annotations.AfterTest;
 import org.testng.annotations.BeforeTest;
+
+import java.time.Duration;
 
 public class BaseTest {
     protected WebDriver driver;
     protected ExtentReports extentReports;
     protected ExtentTest test;
-    private static final String BASE_URL = "https://www.intimetec.com/";
 
     @BeforeTest
     public void setup() {
@@ -20,27 +22,19 @@ public class BaseTest {
         test = extentReports.createTest(getClass().getSimpleName());
 
         try {
+            String environment = System.getProperty("env", "prod");
             String browserType = System.getProperty("browser", "chrome").toLowerCase();
 
-            switch (browserType) {
-                case "chrome":
-                    driver = WebDriverHelper.getDriver("chrome");
-                    test.info("Initialized Chrome browser");
-                    break;
-                case "firefox":
-                    driver = WebDriverHelper.getDriver("firefox");
-                    test.info("Initialized Firefox browser");
-                    break;
-                case "edge":
-                    driver = WebDriverHelper.getDriver("edge");
-                    test.info("Initialized Edge browser");
-                    break;
-                default:
-                    throw new IllegalArgumentException("Browser type not supported: " + browserType);
-            }
+            String baseUrl = ConfigManager.getBaseUrl(environment);
+            int timeout = ConfigManager.getTimeout(environment);
 
-            driver.get(BASE_URL);
-            test.info("Navigated to " + BASE_URL);
+            driver = WebDriverHelper.getDriver(browserType);
+            test.info("Initialized " + browserType + " browser");
+
+            driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(timeout));
+
+            driver.get(baseUrl);
+            test.info("Navigated to " + baseUrl);
 
         } catch (Exception e) {
             test.fail("Failed to initialize browser: " + e.getMessage());

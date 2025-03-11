@@ -4,12 +4,12 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
-    public class CareersPage {
+public class CareersPage {
     private WebDriver driver;
     private By indiaCareersLink = By.xpath("//a[@class='btn itt-btn-pghost large']");
-    private By languageSelector = By.xpath("(//div[@class='globe_class'])[2]");
-    private By australiaEnglishLanguage = By.xpath("//a[text()='Australia (English)']");
-    private By koreaEnglishLanguage = By.xpath("//a[text()='Korea (Korean)']");
+    private By languageSelector = By.xpath("//div[@class='globe_class']/following::ul[@class='lang_list_class']");
+    private By australiaEnglishLanguageText = By.xpath("//a[text()='Australia (English)']");
+    private By koreaEnglishLanguageText = By.xpath("//a[text()='Korea (Korean)']");
 
     public CareersPage(WebDriver driver) {
         this.driver = driver;
