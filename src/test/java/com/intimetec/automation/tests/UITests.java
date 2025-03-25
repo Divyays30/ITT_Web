@@ -6,7 +6,10 @@ import com.aventstack.extentreports.reporter.ExtentSparkReporter;
 import com.intimetec.automation.pages.CareersPageActions;
 import com.intimetec.automation.pages.HomePageActions;
 import com.intimetec.automation.utils.ConfigManager;
+import com.intimetec.automation.constants.TestGroups;
+import org.testng.Assert;
 import org.testng.annotations.AfterTest;
+import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
 
@@ -17,19 +20,12 @@ public class UITests extends BaseTest {
     private HomePageActions homePageActions;
     private CareersPageActions careersPageActions;
 
-    @BeforeTest
     public void setup() {
-
         extentReports = new ExtentReports();
         ExtentSparkReporter sparkReporter = new ExtentSparkReporter("reports/report.html");
         extentReports.attachReporter(sparkReporter);
 
-        String environment = System.getProperty("env", "prod");
-        String baseUrl = ConfigManager.getBaseUrl(environment);
-
-        homePageActions = new HomePageActions(driver);
-        careersPageActions = new CareersPageActions(driver);
-
+        String baseUrl = ConfigManager.getBaseUrl();
         test = extentReports.createTest("Setup");
         test.info("WebDriver initialized.");
 
@@ -38,57 +34,41 @@ public class UITests extends BaseTest {
         test.pass("Setup completed successfully.");
     }
 
-    @Test(groups = {"homepage", "smoke"})
+    @Test(groups = {TestGroups.Smoke.COOKIE})
     public void testCookieBanner() {
-        test = extentReports.createTest("Cookie Banner Test");
-        homePageActions
-                .handleCookieBanner();
-        test.pass("Successfully handled cookie banner");
+        boolean isCookieBannerHandled = homePageActions
+                .handleCookieBanner()
+                .isCookieBannerHandled();
+
     }
 
-    @Test(groups = {"homepage", "regression"})
+    @Test(groups = {TestGroups.Smoke.NAVIGATION})
     public void testNavigationToCareers() {
-        test = extentReports.createTest("Careers Navigation Test");
-        homePageActions
+        String currentUrl = homePageActions
                 .clickOnCareers()
                 .storeParentWindowHandle()
-                .switchToNewWindow();
-        test.pass("Successfully navigated to careers page");
+                .switchToNewWindow()
+                .getCurrentUrl();
     }
 
-    @Test(groups = {"careersIndia", "regression"})
+    @Test(groups = {TestGroups.Regression.CAREERS_INDIA})
     public void testIndiaCareersNavigation() {
-        test = extentReports.createTest("India Careers Navigation Test");
-        careersPageActions
-                .clickOnIndiaCareers();
-        test.pass("Successfully navigated to India careers");
+        String currentUrl = careersPageActions
+                .clickOnIndiaCareers()
+                .getCurrentUrl();
     }
 
-    @Test(groups = {"careersAustralia", "regression"})
+    @Test(groups = {TestGroups.Regression.CAREERS_AUSTRALIA})
     public void testAustraliaLanguageSelection() {
-        test = extentReports.createTest("Australia Language Selection Test");
         careersPageActions
                 .clickOnLanguageSelector()
                 .selectAustraliaEnglish();
-        test.pass("Successfully changed language to Australia English");
     }
 
-    @Test(groups = {"careersKorea", "regression"})
+    @Test(groups = {TestGroups.Regression.CAREERS_KOREA})
     public void testKoreaLanguageSelection() {
-        test = extentReports.createTest("Korea Language Selection Test");
         careersPageActions
                 .clickOnLanguageSelector()
                 .selectKoreaEnglish();
-        test.pass("Successfully changed language to Korea English");
-    }
-
-    @AfterTest
-    public void tearDown() {
-        if (extentReports != null) {
-            extentReports.flush();
-        }
-        if (driver != null) {
-            driver.quit();
-        }
     }
 }

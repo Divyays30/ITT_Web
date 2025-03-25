@@ -8,6 +8,7 @@ public class ExtentReportManagerUtils {
     public static ExtentReports extent;
     private static ExtentTest test;
 
+    // Initialize ExtentReports
     public static synchronized ExtentReports createExtentReports() {
         if (extent == null) {
             ExtentSparkReporter sparkReporter = new ExtentSparkReporter("target/extent-reports/report.html"); // Output report file

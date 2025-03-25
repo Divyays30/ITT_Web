@@ -1,0 +1,4 @@
+baseUrl=https://qa.intimetec.com
+timeout=30
+retryAttempts=2
+browser=chrome

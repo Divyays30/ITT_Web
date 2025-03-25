@@ -39,13 +39,13 @@ public class HomePageActions {
         );
         webDriverUtils.scrollToElement(careersLink);
 
-        if (!tryClick(careersLink)) {
+        if (!tryClickElement(careersLink)) {
             webDriverUtils.clickUsingJS(careersLink);
         }
         return this;
     }
 
-    private boolean tryClick(WebElement element) {
+    private boolean tryClickElement(WebElement element) {
         try {
             webDriverUtils.clickElement(element);
             return true;

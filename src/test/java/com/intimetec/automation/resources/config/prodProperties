@@ -1,0 +1,4 @@
+baseUrl=https://www.intimetec.com
+timeout=30
+retryAttempts=1
+browser=chrome

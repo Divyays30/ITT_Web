@@ -2,33 +2,41 @@ package com.intimetec.automation.utils;
 
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.nio.file.Paths;
 import java.util.Properties;
 import java.util.logging.Logger;
 
 public class ConfigManager {
     private static final Logger logger = Logger.getLogger(ConfigManager.class.getName());
-    private static final Properties properties = new Properties();
-    private static final String CONFIG_PATH = "src/test/resources/config/environment.properties";
+    private static Properties properties;
+    private static final String CONFIG_DIR = "src/test/resources/config";
 
-    static {
-        try (FileInputStream fis = new FileInputStream(CONFIG_PATH)) {
+    public static void loadEnvironmentConfig(String environment) {
+        String configFile = Paths.get(CONFIG_DIR, environment + ".properties").toString();
+        properties = new Properties();
+
+        try (FileInputStream fis = new FileInputStream(configFile)) {
             properties.load(fis);
-            logger.info("Loaded configuration from: " + CONFIG_PATH);
+            logger.info("Loaded configuration for environment: " + environment);
         } catch (IOException e) {
-            logger.severe("Failed to load configuration: " + e.getMessage());
+            logger.severe("Failed to load configuration for environment: " + environment);
             throw new RuntimeException("Failed to load configuration", e);
         }
     }
 
-    public static String getBaseUrl(String environment) {
-        return properties.getProperty(environment + ".baseUrl");
+    public static String getBaseUrl() {
+        return properties.getProperty("baseUrl");
     }
 
-    public static int getTimeout(String environment) {
-        return Integer.parseInt(properties.getProperty(environment + ".timeout", "30"));
+    public static int getTimeout() {
+        return Integer.parseInt(properties.getProperty("timeout", "30"));
     }
 
-    public static int getRetryAttempts(String environment) {
-        return Integer.parseInt(properties.getProperty(environment + ".retryAttempts", "1"));
+    public static int getRetryAttempts() {
+        return Integer.parseInt(properties.getProperty("retryAttempts", "1"));
+    }
+
+    public static String getBrowser() {
+        return properties.getProperty("browser", "chrome");
     }
 }

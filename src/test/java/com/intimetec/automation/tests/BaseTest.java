@@ -18,21 +18,21 @@ public class BaseTest {
 
     @BeforeTest
     public void setup() {
+        String environment = System.getProperty("env", "prod");
+        ConfigManager.loadEnvironmentConfig(environment);
+
         extentReports = ExtentReportManagerUtils.createExtentReports();
         test = extentReports.createTest(getClass().getSimpleName());
 
         try {
-            String environment = System.getProperty("env", "prod");
-            String browserType = System.getProperty("browser", "chrome").toLowerCase();
-
-            String baseUrl = ConfigManager.getBaseUrl(environment);
-            int timeout = ConfigManager.getTimeout(environment);
+            String browserType = ConfigManager.getBrowser();
+            String baseUrl = ConfigManager.getBaseUrl();
+            int timeout = ConfigManager.getTimeout();
 
             driver = WebDriverHelper.getDriver(browserType);
             test.info("Initialized " + browserType + " browser");
 
             driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(timeout));
-
             driver.get(baseUrl);
             test.info("Navigated to " + baseUrl);
 
