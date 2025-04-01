@@ -138,4 +138,13 @@ public class WebDriverUtils {
     public void selectLanguage(By languageOption, String languageDescription) {
         scrollToAndClick(languageOption, languageDescription);
     }
+
+    public void tryJavaScriptClick(WebElement element, String elementName) {
+        try {
+            this.clickUsingJS(element);
+        } catch (Exception e) {
+            this.handleException("JavaScript click on " + elementName, e);
+            throw e;
+        }
+    }
 }

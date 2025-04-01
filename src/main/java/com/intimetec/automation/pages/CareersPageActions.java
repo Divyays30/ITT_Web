@@ -2,8 +2,8 @@ package com.intimetec.automation.pages;
 
 import com.intimetec.automation.helpers.WebDriverUtils;
 import org.openqa.selenium.WebDriver;
-import java.time.Duration;
 import org.openqa.selenium.WebElement;
+import java.time.Duration;
 
 public class CareersPageActions {
     private static final Duration ELEMENT_TIMEOUT = Duration.ofSeconds(30);
@@ -17,59 +17,50 @@ public class CareersPageActions {
     }
 
     public CareersPageActions clickOnIndiaCareers() {
-        try {
-            webDriverUtils.waitForElementClickable(careersPage.getIndiaCareersLink(), ELEMENT_TIMEOUT);
-            webDriverUtils.scrollToElement(careersPage.getIndiaCareersLink());
-            webDriverUtils.clickElement(careersPage.getIndiaCareersLink());
-        } catch (Exception e) {
-            webDriverUtils.handleException("clicking India Careers link", e);
-            tryJavaScriptClick(careersPage.getIndiaCareersLink(), "India Careers link");
-        }
+        WebElement indiaCareersLink = webDriverUtils.waitForElementClickable(
+                careersPage.getIndiaCareersLink(),
+                ELEMENT_TIMEOUT
+        );
+        webDriverUtils.scrollToElement(indiaCareersLink);
+        webDriverUtils.clickElement(indiaCareersLink);
         return this;
     }
 
     public CareersPageActions clickOnLanguageSelector() {
-        try {
-            webDriverUtils.waitForElementClickable(careersPage.getLanguageSelector(), ELEMENT_TIMEOUT);
-            webDriverUtils.scrollToElement(careersPage.getLanguageSelector());
-            webDriverUtils.clickElement(careersPage.getLanguageSelector());
-        } catch (Exception e) {
-            webDriverUtils.handleException("clicking Language Selector", e);
-            tryJavaScriptClick(careersPage.getLanguageSelector(), "Language Selector");
-        }
+        WebElement languageSelector = webDriverUtils.waitForElementClickable(
+                careersPage.getLanguageSelector(),
+                ELEMENT_TIMEOUT
+        );
+        webDriverUtils.scrollToElement(languageSelector);
+        webDriverUtils.clickElement(languageSelector);
         return this;
     }
 
     public CareersPageActions selectAustraliaEnglish() {
-        try {
-            webDriverUtils.waitForElementClickable(careersPage.getAustraliaEnglishLanguageOption(), ELEMENT_TIMEOUT);
-            webDriverUtils.scrollToElement(careersPage.getAustraliaEnglishLanguageOption());
-            webDriverUtils.clickElement(careersPage.getAustraliaEnglishLanguageOption());
-        } catch (Exception e) {
-            webDriverUtils.handleException("selecting Australia English", e);
-            tryJavaScriptClick(careersPage.getAustraliaEnglishLanguageOption(), "Australia English option");
-        }
+        WebElement australiaOption = webDriverUtils.waitForElementClickable(
+                careersPage.getAustraliaEnglishLanguageOption(),
+                ELEMENT_TIMEOUT
+        );
+        webDriverUtils.scrollToElement(australiaOption);
+        webDriverUtils.clickElement(australiaOption);
         return this;
     }
 
     public CareersPageActions selectKoreaEnglish() {
-        try {
-            webDriverUtils.waitForElementClickable(careersPage.getKoreaEnglishLanguageOption(), ELEMENT_TIMEOUT);
-            webDriverUtils.scrollToElement(careersPage.getKoreaEnglishLanguageOption());
-            webDriverUtils.clickElement(careersPage.getKoreaEnglishLanguageOption());
-        } catch (Exception e) {
-            webDriverUtils.handleException("selecting Korea English", e);
-            tryJavaScriptClick(careersPage.getKoreaEnglishLanguageOption(), "Korea English option");
-        }
+        WebElement koreaOption = webDriverUtils.waitForElementClickable(
+                careersPage.getKoreaEnglishLanguageOption(),
+                ELEMENT_TIMEOUT
+        );
+        webDriverUtils.scrollToElement(koreaOption);
+        webDriverUtils.clickElement(koreaOption);
         return this;
     }
 
-    private void tryJavaScriptClick(WebElement element, String elementName) {
-        try {
-            webDriverUtils.clickUsingJS(element);
-        } catch (Exception e) {
-            webDriverUtils.handleException("JavaScript click on " + elementName, e);
-            throw e;
-        }
+    public String getCurrentUrl() {
+        webDriverUtils.getCurrentUrl();
+    }
+
+    public String getSelectedLanguage() {
+        return webDriverUtils.getText(careersPage.getLanguageSelector());
     }
 }

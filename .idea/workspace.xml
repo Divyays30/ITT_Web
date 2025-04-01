@@ -5,15 +5,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="ca6617e0-f984-4431-8c39-dfac61e6caef" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/test/java/com/intimetec/automation/resources/config/prodProperties" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/test/java/com/intimetec/automation/resources/config/qaProperties" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/test/java/com/intimetec/automation/resources/config/stagingProperties" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/intimetec/automation/utils/TestSetupManager.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/intimetec/automation/helpers/ExtentReportManagerUtils.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/intimetec/automation/helpers/ExtentReportManagerUtils.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/intimetec/automation/pages/HomePageActions.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/intimetec/automation/pages/HomePageActions.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/intimetec/automation/utils/ConfigManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/intimetec/automation/utils/ConfigManager.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/com/intimetec/automation/resources/Environment.properties" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/com/intimetec/automation/tests/BaseTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/com/intimetec/automation/tests/BaseTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/intimetec/automation/helpers/WebDriverUtils.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/intimetec/automation/helpers/WebDriverUtils.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/intimetec/automation/pages/CareersPageActions.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/intimetec/automation/pages/CareersPageActions.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/test/java/com/intimetec/automation/tests/UITests.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/com/intimetec/automation/tests/UITests.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
